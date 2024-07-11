@@ -29,6 +29,13 @@ public class ToDoContext : DbContext
         modelBuilder.Entity<User>()
             .HasKey(t => t.Id);
 
+        modelBuilder.Entity<User>()
+            .HasMany(t => t.ToDoItems)
+            .WithOne(t => t.User)
+            .HasForeignKey(t => t.UserId);
+
+        base.OnModelCreating(modelBuilder);
+
 
         //modelBuilder.Entity<User>().HasData(
         //    new User
