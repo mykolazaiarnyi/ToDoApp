@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ToDoApp.Data.Context;
 using ToDoApp.Data.Models;
+using ToDoApp.Services.Dtos;
+using ToDoApp.Services.Interfaces;
 
 namespace ToDoApp.Api.Controllers
 {
@@ -9,18 +9,32 @@ namespace ToDoApp.Api.Controllers
     [ApiController]
     public class ToDoItemsController : ControllerBase
     {
-        private readonly ToDoContext _context;
+        private readonly IToDoItemService _service;
 
-        public ToDoItemsController(ToDoContext context)
+        public ToDoItemsController(IToDoItemService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetAsync()
         {
-            var items = await _context.ToDoItems.ToListAsync();
+            var items = await _service.GetAsync();
             return Ok(items);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateAsync(CreateToDoItemDto itemDto)
+        {
+            await _service.CreateAsync(itemDto);
+            return Ok();
+        }
+
+        [HttpPut("{id}/done")]
+        public async Task<ActionResult> UpdateAsync(int id)
+        {
+            await _service.UpdateStatusAsync(id);
+            return Ok();
         }
     }
 }

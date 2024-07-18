@@ -1,5 +1,4 @@
 ﻿using ToDoApp.Data.Context;
-using ToDoApp.Data.Models;
 
 var context = new ToDoContext();
 

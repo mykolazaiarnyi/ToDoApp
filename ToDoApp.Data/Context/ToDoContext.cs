@@ -20,7 +20,7 @@ public class ToDoContext : DbContext
 
         modelBuilder.Entity<ToDoItem>()
             .Property(t => t.CreatedAt)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("GETDATE()"); 
 
         modelBuilder.Entity<User>()
             .HasKey(t => t.Id);
