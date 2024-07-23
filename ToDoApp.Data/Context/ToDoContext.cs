@@ -22,6 +22,10 @@ public class ToDoContext : DbContext
             .Property(t => t.CreatedAt)
             .HasDefaultValueSql("GETDATE()"); 
 
+        modelBuilder.Entity<ToDoItem>()
+            .Property(x => x.Description)
+            .HasMaxLength(100);
+
         modelBuilder.Entity<User>()
             .HasKey(t => t.Id);
 

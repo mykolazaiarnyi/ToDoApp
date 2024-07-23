@@ -2,6 +2,7 @@
 using ToDoApp.Data.Context;
 using ToDoApp.Data.Models;
 using ToDoApp.Services.Dtos;
+using ToDoApp.Services.Exceptions;
 using ToDoApp.Services.Interfaces;
 
 namespace ToDoApp.Services.Services;
@@ -41,9 +42,15 @@ public class ToDoItemService : IToDoItemService
     {
         var item = await _context.ToDoItems.FindAsync(id);
 
-        if (item is null) { }
+        if (item is null) 
+        {
+            throw new ToDoItemNotFoundException();
+        }
 
-        if (item.UserId != _currentUserService.UserId) { }
+        if (item.UserId != _currentUserService.UserId) 
+        {
+            throw new ToDoItemHasDifferentOwnerException();
+        }
 
         item.IsDone = !item.IsDone;
         await _context.SaveChangesAsync();
