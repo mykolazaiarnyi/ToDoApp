@@ -25,6 +25,13 @@ public class ToDoItemService : IToDoItemService
             .ToListAsync();
     }
 
+    public async Task<ToDoItem?> GetByIdAsync(int id)
+    {
+        return await _context.ToDoItems
+            .Include(x => x.User)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task CreateAsync(CreateToDoItemDto itemDto)
     {
         var item = new ToDoItem

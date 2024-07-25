@@ -17,10 +17,40 @@ namespace ToDoApp.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ToDoItem>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<GetToDoItemDto>>> GetAsync()
         {
             var items = await _service.GetAsync();
-            return Ok(items);
+            var itemsDto = items.Select(x => new GetToDoItemDto
+            {
+                Id = x.Id,
+                Description = x.Description,
+                IsDone = x.IsDone,
+                CreatedAt = x.CreatedAt,
+                DueDate = x.DueDate,
+            });
+            return Ok(itemsDto);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetToDoItemDto>> GetAsync(int id)
+        {
+            var item = await _service.GetByIdAsync(id);
+
+            if (item is null)
+            {
+                return NotFound();
+            }
+
+            var itemDto = new GetToDoItemDto
+            {
+                Id = item.Id,
+                Description = item.Description,
+                IsDone = item.IsDone,
+                CreatedAt = item.CreatedAt,
+                DueDate = item.DueDate,
+            };
+
+            return Ok(itemDto);
         }
 
         [HttpPost]
