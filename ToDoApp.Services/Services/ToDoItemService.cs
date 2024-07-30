@@ -47,17 +47,10 @@ public class ToDoItemService : IToDoItemService
 
     public async Task UpdateStatusAsync(int id)
     {
-        var item = await _context.ToDoItems.FindAsync(id);
-
-        if (item is null) 
-        {
-            throw new ToDoItemNotFoundException();
-        }
+        var item = await _context.ToDoItems.FindAsync(id) ?? throw new ToDoItemNotFoundException();
 
         if (item.UserId != _currentUserService.UserId) 
-        {
             throw new ToDoItemHasDifferentOwnerException();
-        }
 
         item.IsDone = !item.IsDone;
         await _context.SaveChangesAsync();
