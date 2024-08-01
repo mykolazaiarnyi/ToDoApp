@@ -1,19 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ToDoApp.Data.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ToDoApp.Data.Context;
 using ToDoApp.Services.Dtos;
 using ToDoApp.Services.Interfaces;
 
 namespace ToDoApp.Api.Controllers
 {
+    [Authorize]
     [Route("api/to-do-items")]
     [ApiController]
     public class ToDoItemsController : ControllerBase
     {
         private readonly IToDoItemService _service;
+        private readonly ToDoContext _context;
 
-        public ToDoItemsController(IToDoItemService service)
+        public ToDoItemsController(IToDoItemService service, ToDoContext context)
         {
             _service = service;
+            _context = context;
         }
 
         [HttpGet]
@@ -65,6 +70,18 @@ namespace ToDoApp.Api.Controllers
         {
             await _service.UpdateStatusAsync(id);
             return Ok();
+        }
+
+        [HttpGet("api/users")]
+        public async Task<ActionResult> GetUsersAsync(string name)
+        {
+            return Ok(await _context.Users
+                .Where(x => x.UserName.Contains(name))
+                .Select(x => new
+            {
+                x.Id,
+                x.UserName,
+            }).ToArrayAsync());
         }
     }
 }

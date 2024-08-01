@@ -10,7 +10,7 @@ namespace ToDoApp.Service.Tests.Services;
 
 public class ToDoItemServiceTests
 {
-    private const int UserId = 1;
+    private const string UserId = "1";
 
     [Fact]
     public async Task UpdateStatusAsync_WithNonExistingItem_ThrowsToDoItemNotFoundException()
@@ -41,7 +41,7 @@ public class ToDoItemServiceTests
         {
             Id = 1,
             Description = "test",
-            UserId = 2,
+            UserId = "2",
         };
         context.ToDoItems.Add(item);
         await context.SaveChangesAsync();

@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ToDoApp.Data.Models;
 
 namespace ToDoApp.Data.Context;
 
-public class ToDoContext : DbContext
+public class ToDoContext : IdentityDbContext<User>
 {
     public DbSet<ToDoItem> ToDoItems { get; set; }
-
-    public DbSet<User> Users { get; set; }
 
     public ToDoContext(DbContextOptions<ToDoContext> options) : base(options)
     {   
@@ -35,33 +34,5 @@ public class ToDoContext : DbContext
             .HasForeignKey(t => t.UserId);
 
         base.OnModelCreating(modelBuilder);
-
-
-        //modelBuilder.Entity<User>().HasData(
-        //    new User
-        //    {
-        //        Id = 1,
-        //        Name = "John Doe"
-        //    }
-        //);
-
-        //modelBuilder.Entity<ToDoItem>().HasData(
-        //    new ToDoItem
-        //    {
-        //        Id = 1,
-        //        Description = "Buy milk",
-        //        DueDate = DateTime.Now.AddDays(1),
-        //        IsDone = false,
-        //        UserId = 1
-        //    },
-        //    new ToDoItem
-        //    {
-        //        Id = 2,
-        //        Description = "Buy bread",
-        //        DueDate = DateTime.Now.AddDays(1),
-        //        IsDone = false,
-        //        UserId = 1
-        //    }
-        //);
     }
 }

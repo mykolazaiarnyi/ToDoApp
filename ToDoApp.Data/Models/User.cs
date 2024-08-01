@@ -1,10 +1,8 @@
-﻿namespace ToDoApp.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace ToDoApp.Data.Models;
+
+public class User : IdentityUser
 {
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-
     public ICollection<ToDoItem> ToDoItems { get; set; }
 }
