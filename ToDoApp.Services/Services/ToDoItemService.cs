@@ -49,8 +49,8 @@ public class ToDoItemService : IToDoItemService
     {
         var item = await _context.ToDoItems.FindAsync(id) ?? throw new ToDoItemNotFoundException();
 
-        if (item.UserId != _currentUserService.UserId) 
-            throw new ToDoItemHasDifferentOwnerException();
+        //if (item.UserId != _currentUserService.UserId) 
+        //    throw new ToDoItemHasDifferentOwnerException();
 
         item.IsDone = !item.IsDone;
         await _context.SaveChangesAsync();
